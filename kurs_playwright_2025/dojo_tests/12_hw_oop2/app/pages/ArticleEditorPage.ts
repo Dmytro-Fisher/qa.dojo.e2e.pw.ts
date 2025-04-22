@@ -1,11 +1,11 @@
 import { Locator, Page } from "@playwright/test";
 import { BasePage } from "./BasePage";
 
-export class ArticleEditorPage extends BasePage {
-  private titleLocator: Locator;
-  private descriptionLocator: Locator;
-  private bodyLocator: Locator;
-  private publishArticleButtonLocator: Locator;
+export abstract class ArticleEditorPage extends BasePage {
+  protected titleLocator: Locator;
+  protected descriptionLocator: Locator;
+  protected bodyLocator: Locator;
+  protected publishArticleButtonLocator: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -21,7 +21,7 @@ export class ArticleEditorPage extends BasePage {
     await this.page.goto("https://demo.learnwebdriverio.com/editor");
   }
 
-  async editArticle(articleData: {
+  protected async editArticle(articleData: {
     title: string;
     description: string;
     body: string;

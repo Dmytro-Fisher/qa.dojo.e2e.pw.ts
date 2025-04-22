@@ -5,46 +5,104 @@ import { ArticleEditorPage } from "./app/pages/ArticleEditorPage";
 import { ArticlesPage } from "./app/pages/ArticlesPage";
 import { BasePage } from "./app/pages/BasePage";
 import { HomePage } from "./app/pages/HomePage";
+import { HeaderComponents } from "./app/pages/HeaderComponents";
+import { ArticleEditingPage } from "./app/pages/ArticleEditingPage";
+import { ArticleCreationPage } from "./app/pages/ArticleCreationPage";
 
-test("SignUp user, create, edit, delete article", async ({ page }) => {
+test("Create article", async ({ page }) => {
   const signUpPage = new SignUpPage(page);
-  const articleEditorPage = new ArticleEditorPage(page);
+  const articleCreationPage = new ArticleCreationPage(page);
   const articlesPage = new ArticlesPage(page);
   const homePage = new HomePage(page);
+  const header = new HeaderComponents(page);
 
   await signUpPage.goto();
   await signUpPage.registerUser({
-    username: "myusername23845",
-    email: "somes49024@ami.co",
+    username: "myusername233245",
+    email: "somes49044@ami.co",
     pass: "asfaf",
   });
 
   await page.waitForURL(`https://demo.learnwebdriverio.com/`);
   await homePage.newArticleButtonLocator.click();
 
-  await articleEditorPage.editArticle({
+  await articleCreationPage.createArticle({
     title: "random title",
     description: "random desc",
     body: "random body",
   });
 
-  await articleEditorPage.publishArticle();
+  const articleHeader = articlesPage.getArticleLocatorByTitle("random title");
+
+  await expect(articleHeader).toBeVisible();
+});
+
+test("Edit article", async ({ page }) => {
+  const signUpPage = new SignUpPage(page);
+  const articleCreationPage = new ArticleCreationPage(page);
+  const articleEditingPage = new ArticleEditingPage(page);
+  const articlesPage = new ArticlesPage(page);
+  const homePage = new HomePage(page);
+  const header = new HeaderComponents(page);
+
+  await signUpPage.goto();
+  await signUpPage.registerUser({
+    username: "myusername2756745",
+    email: "somes4342424@ami.co",
+    pass: "asfaf",
+  });
+
+  await page.waitForURL(`https://demo.learnwebdriverio.com/`);
+  await homePage.clickOnNewArticle();
+
+  await articleCreationPage.createArticle({
+    title: "random title",
+    description: "random desc",
+    body: "random body",
+  });
 
   const articleHeader = articlesPage.getArticleLocatorByTitle("random title");
 
   await expect(articleHeader).toBeVisible();
 
   await articlesPage.editArticleButtonLocator.click();
-  await articleEditorPage.editArticle({
+  await articleEditingPage.editingArticle({
     title: "new random title 2025",
     description: "new random description",
     body: "new random body",
   });
-  await articleEditorPage.publishArticle();
+
   const newArticleHeader = articlesPage.getArticleLocatorByTitle(
     "new random title 2025"
   );
   await expect(newArticleHeader).toBeVisible();
+});
 
-  await articlesPage.deleteArticleButtonLocator.click();
+test("Delete article", async ({ page }) => {
+  const signUpPage = new SignUpPage(page);
+  const articleCreationPage = new ArticleCreationPage(page);
+  const articlesPage = new ArticlesPage(page);
+  const homePage = new HomePage(page);
+  const header = new HeaderComponents(page);
+
+  await signUpPage.goto();
+  await signUpPage.registerUser({
+    username: "myusername212345",
+    email: "somes9871024@ami.co",
+    pass: "asfaf",
+  });
+
+  await page.waitForURL(`https://demo.learnwebdriverio.com/`);
+  await homePage.newArticleButtonLocator.click();
+
+  await articleCreationPage.createArticle({
+    title: "random title",
+    description: "random desc",
+    body: "random body",
+  });
+
+  const articleHeader = articlesPage.getArticleLocatorByTitle("random title");
+
+  await expect(articleHeader).toBeVisible();
+  await articleCreationPage.deleteArticle();
 });

@@ -1,7 +1,8 @@
 import { Page, Locator } from "@playwright/test";
 import { BasePage } from "./BasePage";
+import { HeaderComponents } from "./HeaderComponents";
 
-export class HomePage extends BasePage {
+export class HomePage extends HeaderComponents {
   public newArticleButtonLocator: Locator;
 
   constructor(page: Page) {
