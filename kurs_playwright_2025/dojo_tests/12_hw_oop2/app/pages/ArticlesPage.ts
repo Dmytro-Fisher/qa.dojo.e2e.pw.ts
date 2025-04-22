@@ -23,6 +23,13 @@ export class ArticlesPage {
     );
   }
 
+  async clickOnEditArticle() {
+    await this.editArticleButtonLocator.click();
+  }
+  async clickOnDeleteArticle() {
+    await this.deleteArticleButtonLocator.click();
+  }
+
   getArticleLocatorByTitle(title: string) {
     return this.page.getByRole("heading", {
       name: title,

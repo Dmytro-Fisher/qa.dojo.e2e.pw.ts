@@ -9,7 +9,7 @@ import { HeaderComponents } from "./app/pages/HeaderComponents";
 import { ArticleEditingPage } from "./app/pages/ArticleEditingPage";
 import { ArticleCreationPage } from "./app/pages/ArticleCreationPage";
 
-test("Create article", async ({ page }) => {
+test("Create article - it should be created", async ({ page }) => {
   const signUpPage = new SignUpPage(page);
   const articleCreationPage = new ArticleCreationPage(page);
   const articlesPage = new ArticlesPage(page);
@@ -37,7 +37,7 @@ test("Create article", async ({ page }) => {
   await expect(articleHeader).toBeVisible();
 });
 
-test("Edit article", async ({ page }) => {
+test("Edit article - it should be edited", async ({ page }) => {
   const signUpPage = new SignUpPage(page);
   const articleCreationPage = new ArticleCreationPage(page);
   const articleEditingPage = new ArticleEditingPage(page);
@@ -65,7 +65,7 @@ test("Edit article", async ({ page }) => {
 
   await expect(articleHeader).toBeVisible();
 
-  await articlesPage.editArticleButtonLocator.click();
+  await articlesPage.clickOnEditArticle();
   await articleEditingPage.editingArticle({
     title: "new random title 2025",
     description: "new random description",
@@ -78,7 +78,7 @@ test("Edit article", async ({ page }) => {
   await expect(newArticleHeader).toBeVisible();
 });
 
-test("Delete article", async ({ page }) => {
+test("Delete article - it should be deleted", async ({ page }) => {
   const signUpPage = new SignUpPage(page);
   const articleCreationPage = new ArticleCreationPage(page);
   const articlesPage = new ArticlesPage(page);
@@ -104,5 +104,5 @@ test("Delete article", async ({ page }) => {
   const articleHeader = articlesPage.getArticleLocatorByTitle("random title");
 
   await expect(articleHeader).toBeVisible();
-  await articleCreationPage.deleteArticle();
+  await articlesPage.clickOnDeleteArticle();
 });

@@ -18,7 +18,4 @@ export class ArticleCreationPage extends ArticleEditorPage {
     await super.editArticle(articleData);
     await super.publishArticle();
   }
-  async deleteArticle() {
-    await this.deleteArticleButtonLocator.click();
-  }
 }
