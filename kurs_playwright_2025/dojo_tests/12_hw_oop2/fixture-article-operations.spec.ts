@@ -1,5 +1,6 @@
 // page object model  (обєкт моделі сторінки)
-import { test, Locator, Page, expect } from "@playwright/test";
+import { Locator, Page, expect } from "@playwright/test";
+import { test } from "./app/pages/fixture";
 import { SignUpPage } from "./app/pages/SignUpPage";
 import { ArticleEditorPage } from "./app/pages/ArticleEditorPage";
 import { ArticlesPage } from "./app/pages/ArticlesPage";
@@ -11,19 +12,19 @@ import { ArticleCreationPage } from "./app/pages/ArticleCreationPage";
 import { faker } from "@faker-js/faker";
 
 test.describe("Article CRUD flows", () => {
-  let signUpPage: SignUpPage;
-  let articleCreationPage: ArticleCreationPage;
-  let articleEditingPage: ArticleEditingPage;
-  let articlesPage: ArticlesPage;
-  let homePage: HomePage;
-  let header: HeaderComponents;
-  test.beforeEach(async ({ page }) => {
-    signUpPage = new SignUpPage(page);
-    articleCreationPage = new ArticleCreationPage(page);
-    articlesPage = new ArticlesPage(page);
-    homePage = new HomePage(page);
-    header = new HeaderComponents(page);
-    articleEditingPage = new ArticleEditingPage(page);
+  // let signUpPage: SignUpPage;
+  // let articleCreationPage: ArticleCreationPage;
+  // let articleEditingPage: ArticleEditingPage;
+  // let articlesPage: ArticlesPage;
+  // let homePage: HomePage;
+  // let header: HeaderComponents;
+  test.beforeEach(async ({ page, signUpPage, homePage }) => {
+    // signUpPage = new SignUpPage(page);
+    // articleCreationPage = new ArticleCreationPage(page);
+    // articlesPage = new ArticlesPage(page);
+    // homePage = new HomePage(page);
+    // header = new HeaderComponents(page);
+    // articleEditingPage = new ArticleEditingPage(page);
 
     await signUpPage.goto();
     await signUpPage.registerUser({
@@ -34,7 +35,10 @@ test.describe("Article CRUD flows", () => {
     await page.waitForURL("https://demo.learnwebdriverio.com/");
     await homePage.clickOnNewArticle();
   });
-  test("Create article - it should be created", async ({ page }) => {
+  test("Create article - it should be created", async ({
+    articleCreationPage,
+    articlesPage,
+  }) => {
     await articleCreationPage.createArticle({
       title: "random title",
       description: "random desc",
@@ -46,7 +50,11 @@ test.describe("Article CRUD flows", () => {
     await expect(articleHeader).toBeVisible();
   });
 
-  test("Edit article - it should be edited", async ({ page }) => {
+  test("Edit article - it should be edited", async ({
+    articleCreationPage,
+    articlesPage,
+    articleEditingPage,
+  }) => {
     await articleCreationPage.createArticle({
       title: "random title",
       description: "random desc",
@@ -70,7 +78,10 @@ test.describe("Article CRUD flows", () => {
     await expect(newArticleHeader).toBeVisible();
   });
 
-  test("Delete article - it should be deleted", async ({ page }) => {
+  test("Delete article - it should be deleted", async ({
+    articleCreationPage,
+    articlesPage,
+  }) => {
     await articleCreationPage.createArticle({
       title: "random title",
       description: "random desc",
