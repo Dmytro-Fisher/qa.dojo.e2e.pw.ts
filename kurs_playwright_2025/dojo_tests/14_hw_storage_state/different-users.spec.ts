@@ -1,0 +1,29 @@
+import { test } from "./storage-state-fixture";
+import { expect } from "@playwright/test";
+import { faker } from "@faker-js/faker";
+
+test("Create article with storage data - it should be created", async ({
+  articleCreationPage,
+  articlesPage,
+  signUpPage,
+  page,
+  homePage,
+}) => {
+  await signUpPage.goto();
+  await signUpPage.registerUser({
+    username: "nameuser555",
+    email: "nametesting@gm.com",
+    pass: "12345",
+  });
+  await page.waitForURL("https://demo.learnwebdriverio.com/");
+  await homePage.clickOnNewArticle();
+  await articleCreationPage.createArticle({
+    title: "random title",
+    description: "random desc",
+    body: "random body",
+  });
+
+  const articleHeader = articlesPage.getArticleLocatorByTitle("random title");
+
+  await expect(articleHeader).toBeVisible();
+});

@@ -9,7 +9,6 @@ test.describe("Fill, submit form and verify data", () => {
     permanentAddress: string;
   };
   test.beforeEach(async ({ textBoxPage }) => {
-    // await textBoxPage.goto();
     data = {
       fullname: faker.person.fullName(),
       email: faker.internet.email(),

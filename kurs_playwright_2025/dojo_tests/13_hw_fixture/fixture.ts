@@ -1,20 +1,15 @@
 import { test as base, ConsoleMessage } from "@playwright/test";
 import { TextBoxPage } from "./class-TextBoxPage";
 import { VerifyForm } from "./class-VerifyForm";
-import { faker } from "@faker-js/faker";
-
-// type FormDataType = {
-//   fullname: string;
-//   email: string;
-//   currentAddress: string;
-//   permanentAddress: string;
-// };
+import { writeFile } from "fs/promises";
+import * as path from "path";
 
 type Fixture = {
   textBoxPage: TextBoxPage;
   verifyForm: VerifyForm;
-  // formData: FormDataType;
 };
+
+const errorLogs: string[] = [];
 
 export const test = base.extend<Fixture>({
   page: async ({ page }, use) => {
@@ -22,11 +17,11 @@ export const test = base.extend<Fixture>({
       route.abort(); // Block the request
     });
 
-    // page.on("console", async (msg: ConsoleMessage) => {
-    //   if (msg.type() === "error") {
-    //     throw Error(msg.text());
-    //   }
-    // });
+    page.on("console", async (msg: ConsoleMessage) => {
+      if (msg.type() === "error") {
+        errorLogs.push(msg.text());
+      }
+    });
 
     const textBoxPage = new TextBoxPage(page);
     await textBoxPage.goto();
@@ -43,13 +38,11 @@ export const test = base.extend<Fixture>({
     const verifyForm = new VerifyForm(page);
     await use(verifyForm);
   },
-  // formData: async ({}, use) => {
-  //   const data: FormDataType = {
-  //     fullname: faker.person.fullName(),
-  //     email: faker.internet.email(),
-  //     currentAddress: faker.location.secondaryAddress(),
-  //     permanentAddress: faker.location.streetAddress(),
-  //   };
-  //   await use(data);
-  // },
+});
+test.afterAll(async () => {
+  if (errorLogs.length === 0) return; // нічого не записувати
+  const outputPath = path.resolve(__dirname, "console-errors.txt");
+
+  // Якщо файл не існує — створить, якщо існує — перезапише
+  await writeFile(outputPath, errorLogs.join("\n"), "utf-8");
 });
