@@ -1,7 +1,13 @@
 import { test } from "./storage-state-fixture";
 import { expect } from "@playwright/test";
 import { faker } from "@faker-js/faker";
-
+test.use({
+  authData: {
+    username: "nameuser11155",
+    email: "nametesting111@gm.com",
+    pass: "12345",
+  },
+});
 test("Create article with storage data - it should be created", async ({
   articleCreationPage,
   articlesPage,
