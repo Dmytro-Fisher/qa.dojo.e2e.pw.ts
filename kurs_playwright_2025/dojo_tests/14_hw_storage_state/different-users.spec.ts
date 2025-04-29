@@ -3,8 +3,8 @@ import { expect } from "@playwright/test";
 import { faker } from "@faker-js/faker";
 test.use({
   authData: {
-    username: "nameuser11155",
-    email: "nametesting111@gm.com",
+    username: "nameuser888",
+    email: "nametesting888@gm.com",
     pass: "12345",
   },
 });
@@ -16,12 +16,6 @@ test("Create article with storage data - it should be created", async ({
   homePage,
 }) => {
   await signUpPage.goto();
-  await signUpPage.registerUser({
-    username: "nameuser555",
-    email: "nametesting@gm.com",
-    pass: "12345",
-  });
-  await page.waitForURL("https://demo.learnwebdriverio.com/");
   await homePage.clickOnNewArticle();
   await articleCreationPage.createArticle({
     title: "random title",
